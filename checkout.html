@@ -681,6 +681,8 @@ cvv:cvv.value
 
 let res = data.trim();
 
+console.log("SERVER RESPONSE:", res); // DEBUG
+
 if(res === "success"){
 
     showPaymentMsg("Payment successful! Order placed", "success");
@@ -693,6 +695,14 @@ if(res === "success"){
 else if(res === "duplicate"){
 
     showPaymentMsg("⚠️ This mobile number already placed an order", "error");
+
+    btn.disabled = false;
+    btn.innerText = "Place Order Securely";
+
+}
+else if(res.startsWith("error")){
+
+    showPaymentMsg(res, "error"); // 👈 exact error show karega
 
     btn.disabled = false;
     btn.innerText = "Place Order Securely";
