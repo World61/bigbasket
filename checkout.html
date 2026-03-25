@@ -256,8 +256,8 @@ box-shadow:0 0 0 3px rgba(220,38,38,0.1);
 <div class="error-text" id="monthError">Enter valid month</div></div>
 
 <div class="col-md-6">
-<input class="input" id="expYear" placeholder="YY" maxlength="2">
-<div class="error-text" id="yearError">Invalid expiry year</div></div>
+<input class="input" id="expYear" placeholder="YY" maxlength="2" inputmode="numeric">
+    <div class="error-text" id="yearError">Invalid expiry year</div></div>
 </div>
 
 <div class="input-wrap">
@@ -483,7 +483,10 @@ document.getElementById("total").innerText = (price-discount).toFixed(2);
 
 }
 
-
+document.getElementById("expYear").addEventListener("input", function(){
+    this.value = this.value.replace(/\D/g,'').substring(0,2);
+});
+    
 // ✅ CARD FORMAT
 document.getElementById("cardNumber").addEventListener("input",function(e){
 let value = e.target.value.replace(/\D/g,'').substring(0,16);
@@ -506,14 +509,20 @@ document.getElementById("expMonth").addEventListener("blur", function(){
 });
 
 // ✅ YEAR
-document.getElementById("expYear").addEventListener("blur",function(){
-let year = parseInt(this.value);
-let currentYear = new Date().getFullYear() % 100;
+    document.getElementById("expYear").addEventListener("blur", function(){
+    let year = parseInt(this.value);
+    let currentYear = new Date().getFullYear() % 100;
 
-if(year < currentYear){
-showPaymentMsg("Card expired");
-this.value="";
-}
+    if(isNaN(year)){
+        showPaymentMsg("Enter valid year");
+        this.value = "";
+        return;
+    }
+
+    if(year < currentYear){
+        showPaymentMsg("Card expired");
+        this.value="";
+    }
 });
 
 
